@@ -1,0 +1,23 @@
+{
+  "name": "genesis-device",
+  "version": "0.1.0",
+  "description": "Write Terraform configurations in Javascript.",
+  "main": "GenesisDevice.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayanklahiri/node-genesis-device.git"
+  },
+  "keywords": [
+    "terraform",
+    "generator"
+  ],
+  "author": "Mayank Lahiri <mlahiri@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mayanklahiri/node-genesis-device/issues"
+  },
+  "homepage": "https://github.com/mayanklahiri/node-genesis-device#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
