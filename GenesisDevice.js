@@ -52,21 +52,22 @@ GenesisDevice.prototype.addProvider = function(name, defn, comment) {
 };
 
 
-GenesisDevice.prototype.addData = function(name, defn, comment) {
-  if (name in this.providers) {
+GenesisDevice.prototype.addData = function(type, name, definition, comment) {
+  if (name in this.data) {
     throw new Error(fmt(
         'Already added data called "%s".', name));
   }
   this.data[name] = {
-    definition: defn,
-    name: name,
-    comment: comment,
+    definition,
+    name,
+    comment,
+    type,
   };
 };
 
 
 GenesisDevice.prototype.addOutput = function(name, defn, comment) {
-  if (name in this.providers) {
+  if (name in this.outputs) {
     throw new Error(fmt(
         'Already added an output called "%s".', name));
   }
@@ -97,12 +98,12 @@ GenesisDevice.prototype.toString = function() {
   //
   // Render data.
   //
-  var dataStr = _.map(this.data, function(dataDef, provName) {
-    var commentStr = renderComment(provDef.comment, 0);
-    var defnStr = renderDefinition(provDef.definition, 2).join('\n');
+  var dataStr = _.map(this.data, function(dataDef, dataName) {
+    var commentStr = renderComment(dataDef.comment, 0);
+    var defnStr = renderDefinition(dataDef.definition, 2).join('\n');
     return _.filter([
       commentStr,
-      fmt('data "%s" {', provName),
+      fmt('data "%s" "%s" {', dataDef.type, dataName),
       defnStr,
       '}',
     ]).join('\n') + '\n\n';
