@@ -9,6 +9,7 @@ function GenesisDevice() {
   this.providers = {};
   this.data = {};
   this.outputs = {};
+  this.backends = {};
 }
 
 
@@ -72,6 +73,19 @@ GenesisDevice.prototype.addOutput = function(name, defn, comment) {
         'Already added an output called "%s".', name));
   }
   this.outputs[name] = {
+    definition: defn,
+    name: name,
+    comment: comment,
+  };
+};
+
+
+GenesisDevice.prototype.addBackend = function(name, defn, comment) {
+  if (name in this.backends) {
+    throw new Error(fmt(
+        'Already added a backend called "%s".', name));
+  }
+  this.backends[name] = {
     definition: defn,
     name: name,
     comment: comment,
@@ -153,8 +167,26 @@ GenesisDevice.prototype.toString = function() {
     ]).join('\n') + '\n\n';
   }).join('\n');
 
+  //
+  // Render backends.
+  //
+  var backendsStr = _.map(this.backends, function(backDef, backName) {
+    var commentStr = renderComment(backDef.comment, 0);
+    var defnStr = renderDefinition(backDef.definition, 4).join('\n');
+    return _.filter([
+      commentStr,
+      'terraform {',
+      fmt('  backend "%s" {', backName),
+      defnStr,
+      '  }',
+      '}',
+    ]).join('\n') + '\n\n';
+  }).join('\n')
+
+
   return [
     variablesStr,
+    backendsStr,
     providersStr,
     dataStr,
     resourcesStr,
