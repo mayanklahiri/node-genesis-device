@@ -1,8 +1,13 @@
 {
   "name": "genesis-device",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Write Terraform configurations in Javascript.",
-  "main": "GenesisDevice.js",
+  "main": "src/GenesisDevice.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint --fix-dry-run --ext .js __tests__/ lib/",
+    "lint-fix": "eslint --fix --ext .js,*.json __tests__/ lib/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mayanklahiri/node-genesis-device.git"
@@ -12,12 +17,20 @@
     "generator"
   ],
   "author": "Mayank Lahiri <mlahiri@gmail.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/mayanklahiri/node-genesis-device/issues"
   },
   "homepage": "https://github.com/mayanklahiri/node-genesis-device#readme",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "eslint-config-google": "^0.11.0",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "jest": "^23.6.0"
+  },
+  "jest": {
+    "collectCoverage": true
   }
 }
