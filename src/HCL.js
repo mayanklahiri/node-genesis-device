@@ -97,7 +97,7 @@ function renderDefinitionRhs(val, indent) {
   }
   if (isObject(val)) {
     const rhsLines = exports.renderDefinition(val, indent + 2);
-    const rhsStr = rhsLines.join('\n');
+    const rhsStr = rhsLines;
     return `{
 ${rhsStr}
 ${indentStr}}`;
