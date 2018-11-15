@@ -7,7 +7,8 @@ const {renderComment, renderDefinition} = require('./HCL');
  */
 class GenesisDevice {
   /**
-   * @param {?string} outputHeader Optional text to add to the top of generated source files (e.g., auto-generation warnings).
+   * @param {?string} outputHeader Optional text to add to the top of generated
+   * source files (e.g., auto-generation warnings).
    */
   constructor(outputHeader) {
     this.variables = {};
@@ -182,6 +183,7 @@ class GenesisDevice {
    * @private
    * @param {string} sectionType
    * @param {object} valueMap
+   * @return {string} Rendered representation.
    */
   baseRenderUntyped(sectionType, valueMap) {
     const order = orderBy(keys(valueMap));
@@ -210,14 +212,15 @@ class GenesisDevice {
    */
   renderResources() {
     const {resources} = this;
-    return this.baseRenderTyped('resources', resources);
+    return this.baseRenderTyped('resource', resources);
   }
 
   /**
    * Renders typed resources, like resources and data.
    * @private
    * @param {string} sectionType
-   * @param {object} valueMap
+   * @param {object} typedValueMap
+   * @return {string} Rendered representation.
    */
   baseRenderTyped(sectionType, typedValueMap) {
     const typeOrder = orderBy(keys(typedValueMap));

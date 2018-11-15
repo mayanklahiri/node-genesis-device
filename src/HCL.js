@@ -6,12 +6,15 @@ const {
   keys,
   map,
   max,
+  first,
+  filter,
   isUndefined,
   isBoolean,
   isObject,
   isInteger,
   isString,
   isArray,
+  orderBy,
   padEnd,
   size,
 } = require('lodash');
@@ -41,7 +44,13 @@ exports.renderDefinition = function renderDefinition(defn, indent) {
   indent = indent || 0;
   const indentStr = Array(indent + 1).join(' ');
   const longestKeyLength = max(map(keys(defn), size)) || 0;
-  return map(defn, function(val, key) {
+  let keyOrder = orderBy(keys(defn));
+  if (defn['$inlines']) {
+    keyOrder = filter(keyOrder, (key) => key !== '$inlines');
+    keyOrder.push('$inlines');
+  }
+  return map(keyOrder, (key) => {
+    const val = defn[key];
     if (key === '$inlines') {
       return renderInlines(val, indent);
     } else {
@@ -61,13 +70,13 @@ exports.renderDefinition = function renderDefinition(defn, indent) {
  */
 function renderInlines(val, indent) {
   const indentStr = Array(indent + 1).join(' ');
-  return map(val, (pair) =>
+  return '\n' + map(orderBy(val, first), (pair) =>
     [
       `${indentStr}${pair[0]} {
 ${exports.renderDefinition(pair[1], indent + 2)}
 ${indentStr}}`,
     ].join('\n')
-  );
+  ).join('\n\n');
 }
 
 /**

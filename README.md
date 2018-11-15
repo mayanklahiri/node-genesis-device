@@ -43,9 +43,9 @@ when run using node will write the following Terraform-syntax configuration to t
     #
     resource "aws_vpc" "regional_vpc" {
       cidr_block           = "10.0.0.0/16"
-      instance_tenancy     = "default"
       enable_dns_hostnames = true
       enable_dns_support   = true
+      instance_tenancy     = "default"
     }
 
 More complicated, nested Terraform constructions are also supported. For example, the code below (using the special `$inlines` key):
@@ -80,19 +80,23 @@ will generate the Terraform fragment below:
     resource "aws_security_group" "db_security_group" {
       description = "Only allow private IP traffic."
       name        = "db_security_group"
-      vpc_id      = "${aws_vpc.regional_vpc.id}"
-
-      ingress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["10.0.0.0/8"]
-      }
+      vpc_id      = "\${aws_vpc.regional_vpc.id}"
 
       egress {
+        cidr_blocks = [
+          "10.0.0.0/8"
+        ]
         from_port   = 0
-        to_port     = 0
         protocol    = "-1"
-        cidr_blocks = ["10.0.0.0/8"]
+        to_port     = 0
+      }
+
+      ingress {
+        cidr_blocks = [
+          "10.0.0.0/8"
+        ]
+        from_port   = 0
+        protocol    = "-1"
+        to_port     = 0
       }
     }
